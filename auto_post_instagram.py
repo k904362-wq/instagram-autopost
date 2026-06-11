@@ -9,6 +9,7 @@ import requests
 import random
 from datetime import datetime
 import pytz
+from generate_image import generate_image
 
 # ============================================================
 # 設定
@@ -352,7 +353,6 @@ def get_post_content():
 
     post_type = WEEKDAY_TYPE.get(weekday, "問いかけ")
     templates  = POST_TEMPLATES[post_type]
-    image_url  = IMAGE_URLS[post_type]
 
     # 日付をシードにして毎日違うテンプレートを選択
     random.seed(hash(today_str) % (2**32))
@@ -361,6 +361,11 @@ def get_post_content():
     text = template.format(cta=CTA) if "{cta}" in template else template
 
     print(f"[{today_str}] 曜日: {['月','火','水','木','金','土','日'][weekday]} / タイプ: {post_type}")
+
+    # 画像を自動生成
+    print("画像生成中...")
+    image_url = generate_image(post_type, text)
+
     return post_type, text, image_url
 
 
@@ -376,7 +381,7 @@ def main():
 
     print(f"投稿タイプ: {post_type}")
     print(f"画像URL: {image_url}")
-    print(f"投稿内容:\n{text}\n")
+    print(f"投稿内容:\n{text[:80]}...\n")
 
     result = post_to_buffer(text, image_url)
 

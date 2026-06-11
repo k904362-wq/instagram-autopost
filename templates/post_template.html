@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    background: #0d1117;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 80px 80px 70px;
+    overflow: hidden;
+  }
+
+  /* 背景装飾 */
+  body::before {
+    content: "";
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  body::after {
+    content: "";
+    position: absolute;
+    bottom: -150px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ヘッダー */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tag {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px 28px;
+    border-radius: 50px;
+    letter-spacing: 2px;
+  }
+
+  .account {
+    font-size: 24px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+  }
+
+  /* メインコンテンツ */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 0;
+  }
+
+  .main-text {
+    font-size: 46px;
+    line-height: 1.75;
+    font-weight: 500;
+    white-space: pre-wrap;
+    letter-spacing: 0.5px;
+  }
+
+  /* VS・比較スタイル */
+  .main-text .good { color: #10b981; }
+  .main-text .bad  { color: #f87171; }
+  .main-text .accent { color: #fbbf24; }
+  .main-text .bold { font-weight: bold; }
+
+  /* 区切り線 */
+  .divider {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #10b981);
+    border-radius: 2px;
+    margin: 50px 0 50px;
+  }
+
+  /* フッター */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cta-box {
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.4);
+    border-radius: 16px;
+    padding: 24px 36px;
+    max-width: 750px;
+  }
+
+  .cta-label {
+    font-size: 22px;
+    color: #a5b4fc;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .cta-main {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 1px;
+  }
+
+  .logo {
+    text-align: right;
+  }
+
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-left: auto;
+    margin-bottom: 8px;
+  }
+
+  .logo-name {
+    font-size: 20px;
+    color: rgba(255,255,255,0.5);
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <div class="tag">{{ tag }}</div>
+    <div class="account">@ai_jidou_salon</div>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <div class="content">
+    <div class="divider"></div>
+    <div class="main-text">{{ body }}</div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    <div class="cta-box">
+      <div class="cta-label">↓ 無料プレゼント配布中</div>
+      <div class="cta-main">Threads自動投稿マニュアル<br>プロフィールのリンクから受け取る</div>
+    </div>
+    <div class="logo">
+      <div class="logo-icon">🤖</div>
+      <div class="logo-name">鷹村</div>
+    </div>
+  </div>
+
+</body>
+</html>
