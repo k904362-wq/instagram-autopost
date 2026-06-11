@@ -323,13 +323,16 @@ mutation CreatePost($input: CreatePostInput!) {
 """
 
 def post_to_buffer(text: str, image_url: str):
-    """Buffer GraphQL APIで投稿"""
+    """Buffer GraphQL APIでキューに追加"""
     variables = {
         "input": {
             "channelId": BUFFER_CHANNEL_ID,
             "text": text,
             "schedulingType": "automatic",
-            "mode": "shareNow",
+            "mode": "addToQueue",
+            "metadata": {
+                "instagram": {"type": "post", "shouldShareToFeed": True}
+            },
             "assets": [{"image": {"url": image_url}}]
         }
     }
