@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    background: #0a0a0f;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 背景グラデーション */
+  .bg-glow-1 {
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .bg-glow-2 {
+    position: absolute;
+    bottom: -100px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* アカウント名 */
+  .account {
+    position: absolute;
+    top: 50px; right: 70px;
+    font-size: 22px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 1px;
+  }
+
+  /* メインコンテンツ */
+  .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 無料バッジ */
+  .free-badge {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    padding: 10px 36px;
+    border-radius: 50px;
+    letter-spacing: 3px;
+    margin-bottom: 48px;
+  }
+
+  /* メインタイトル */
+  .main-title {
+    font-size: 62px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .main-title .highlight {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* サブタイトル */
+  .subtitle {
+    font-size: 30px;
+    color: rgba(255,255,255,0.65);
+    text-align: center;
+    margin-bottom: 64px;
+    letter-spacing: 1px;
+    line-height: 1.6;
+  }
+
+  /* 区切り線 */
+  .divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #10b981);
+    border-radius: 2px;
+    margin-bottom: 56px;
+  }
+
+  /* 特典内容リスト */
+  .benefits {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 64px;
+  }
+
+  .benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px 32px;
+  }
+
+  .benefit-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+  }
+
+  .benefit-text {
+    font-size: 30px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* CTAボックス */
+  .cta-box {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.25));
+    border: 2px solid rgba(99,102,241,0.6);
+    border-radius: 20px;
+    padding: 36px 48px;
+    text-align: center;
+  }
+
+  .cta-label {
+    font-size: 24px;
+    color: #a5b4fc;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .cta-main {
+    font-size: 34px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1.5;
+  }
+
+  .cta-arrow {
+    font-size: 28px;
+    color: #6366f1;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <div class="account">@ai_jidou_salon</div>
+
+  <div class="content">
+
+    <div class="free-badge">＼ 無料プレゼント ／</div>
+
+    <div class="main-title">
+      <span class="highlight">Threads</span>自動投稿<br>初期設定マニュアル
+    </div>
+
+    <div class="subtitle">
+      たった10分で完了<br>AIが24時間投稿し続ける仕組み
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="benefits">
+      <div class="benefit-item">
+        <div class="benefit-icon">⚡</div>
+        <div class="benefit-text">設定10分でThreads自動投稿が完成</div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🤖</div>
+        <div class="benefit-text">AIが毎日投稿を作成・配信</div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">📈</div>
+        <div class="benefit-text">投稿ゼロ時間で月10人集客</div>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <div class="cta-label">↓ 受け取り方</div>
+      <div class="cta-main">プロフィールのリンクから<br>LINE追加で自動受け取り</div>
+      <div class="cta-arrow">▼ プロフィールへ</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
