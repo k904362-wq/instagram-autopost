@@ -1,15 +1,14 @@
 """
-Instagram 自動投稿スクリプト
-@ai_jidou_salon / 鷹村｜SNS投稿0秒で月10人集客
-Buffer GraphQL API 経由で投稿
+Instagram カルーセル自動投稿スクリプト
+@ai_jidou_salon / 幸村｜SNS投稿0秒で月10人集客
+Buffer GraphQL API 経由でカルーセル投稿
 """
 
 import os
 import requests
-import random
 from datetime import datetime
 import pytz
-from generate_image import generate_image
+from generate_carousel import generate_carousel, CAROUSEL_CONTENT
 
 # ============================================================
 # 設定
@@ -322,8 +321,9 @@ mutation CreatePost($input: CreatePostInput!) {
 }
 """
 
-def post_to_buffer(text: str, image_url: str):
-    """Buffer GraphQL APIでキューに追加"""
+def post_to_buffer(image_urls: list, text: str):
+    """Buffer GraphQL APIでカルーセルをキューに追加"""
+    assets = [{"image": {"url": url}} for url in image_urls]
     variables = {
         "input": {
             "channelId": BUFFER_CHANNEL_ID,
@@ -333,7 +333,7 @@ def post_to_buffer(text: str, image_url: str):
             "metadata": {
                 "instagram": {"type": "post", "shouldShareToFeed": True}
             },
-            "assets": [{"image": {"url": image_url}}]
+            "assets": assets
         }
     }
 
@@ -348,45 +348,118 @@ def post_to_buffer(text: str, image_url: str):
     return response.json()
 
 
-def get_post_content():
-    """今日の投稿タイプ・テキスト・画像URLを返す"""
+def build_caption(post_type: str) -> str:
+    """投稿タイプに応じたキャプションテキストを生成"""
+    captions = {
+        "問いかけ": """毎日投稿しているのに予約が増えない本当の理由、知っていますか？
+
+問題は投稿の質じゃない。
+「設計」がないだけです。
+
+AIと仕組みで、投稿0秒・月10人集客を実現する方法をまとめました。
+
+↓「Threads自動投稿マニュアル」無料配布中
+プロフィールのリンクから受け取れます
+
+#サロン集客 #AI集客 #自動投稿 #1人サロン #SNS運用""",
+
+        "炎上": """怒られそうですが正直に言います。
+
+毎日投稿は集客にならない。
+
+変えるべきは頻度じゃなく、設計です。
+
+↓「Threads自動投稿マニュアル」無料配布中
+プロフィールのリンクから受け取れます
+
+#サロン集客 #AI自動投稿 #集客の仕組み #1人サロン""",
+
+        "パクリOK": """そのまま使えます。パクってください。
+
+AI自動集客の全手順をスライドにまとめました。
+後で見返せるように保存推奨。
+
+↓「Threads自動投稿マニュアル」無料配布中
+プロフィールのリンクから受け取れます
+
+#サロン集客 #保存推奨 #AI集客 #自動投稿""",
+
+        "VS": """集客できるサロン vs できないサロン
+
+差は能力じゃない。
+仕組みがあるかどうかだけ。
+
+↓「Threads自動投稿マニュアル」無料配布中
+プロフィールのリンクから受け取れます
+
+#サロン集客 #AI自動投稿 #SNS運用 #1人サロン""",
+
+        "Tier": """サロン集客SNS運用 Tier表
+
+あなたは今どの位置ですか？
+
+Tier SSを目指す方法も解説しています。
+
+↓「Threads自動投稿マニュアル」無料配布中
+プロフィールのリンクから受け取れます
+
+#サロン集客 #SNS運用 #AI集客 #Tier表""",
+
+        "実体験": """3年間毎日投稿していたのに月5人だった。
+
+変えたのは投稿頻度じゃなく、設計だった。
+
+今は投稿0秒でAIが24時間集客してくれています。
+
+↓「Threads自動投稿マニュアル」無料配布中
+プロフィールのリンクから受け取れます
+
+#サロン集客 #AI自動化 #1人サロン #実体験""",
+
+        "LINE誘導": """Threads自動投稿初期設定マニュアルを
+無料でお渡しします。
+
+設定時間は2時間。
+あとはAIが24時間投稿し続けます。
+
+プロフィールのリンクから受け取れます↓
+
+#サロン集客 #Threads自動投稿 #LINE #無料プレゼント""",
+    }
+    return captions.get(post_type, captions["問いかけ"])
+
+
+def get_today_post_type() -> str:
+    """今日の曜日から投稿タイプを返す"""
     now = datetime.now(JST)
     weekday = now.weekday()
     today_str = now.strftime("%Y-%m-%d")
-
     post_type = WEEKDAY_TYPE.get(weekday, "問いかけ")
-    templates  = POST_TEMPLATES[post_type]
-
-    # 日付をシードにして毎日違うテンプレートを選択
-    random.seed(hash(today_str) % (2**32))
-    template = random.choice(templates)
-    # LINE誘導タイプはCTA不要（本文にすでに含まれている）
-    text = template.format(cta=CTA) if "{cta}" in template else template
-
     print(f"[{today_str}] 曜日: {['月','火','水','木','金','土','日'][weekday]} / タイプ: {post_type}")
-
-    # 画像を自動生成
-    print("画像生成中...")
-    image_url = generate_image(post_type, text)
-
-    return post_type, text, image_url
+    return post_type
 
 
 def main():
     now = datetime.now(JST)
-    print(f"=== Instagram自動投稿開始 {now.strftime('%Y-%m-%d %H:%M')} JST ===")
+    print(f"=== Instagram カルーセル自動投稿開始 {now.strftime('%Y-%m-%d %H:%M')} JST ===")
 
     if not BUFFER_API_KEY:
         print("ERROR: BUFFER_API_KEY が設定されていません")
         return
 
-    post_type, text, image_url = get_post_content()
+    post_type = get_today_post_type()
 
-    print(f"投稿タイプ: {post_type}")
-    print(f"画像URL: {image_url}")
-    print(f"投稿内容:\n{text[:80]}...\n")
+    # カルーセル画像を全枚生成
+    print(f"\n📸 カルーセル画像生成中（{post_type}）...")
+    image_urls = generate_carousel(post_type)
+    print(f"生成完了: {len(image_urls)}枚")
 
-    result = post_to_buffer(text, image_url)
+    # キャプションを生成
+    caption = build_caption(post_type)
+    print(f"\n投稿内容:\n{caption[:100]}...\n")
+
+    # Bufferに送信
+    result = post_to_buffer(image_urls, caption)
 
     if "errors" in result:
         print(f"ERROR: {result['errors']}")
@@ -394,7 +467,8 @@ def main():
         create_post = result.get("data", {}).get("createPost", {})
         post_id = create_post.get("post", {}).get("id", "不明")
         status  = create_post.get("post", {}).get("status", "")
-        print(f"SUCCESS: Instagram投稿完了 (ID: {post_id}, status: {status})")
+        print(f"✅ SUCCESS: Instagram投稿完了 (ID: {post_id}, status: {status})")
+        print(f"   スライド数: {len(image_urls)}枚")
 
 
 if __name__ == "__main__":
