@@ -483,6 +483,7 @@ async def screenshot_html(html: str, output_path: str):
         browser = await p.chromium.launch()
         page = await browser.new_page(viewport={"width": 1080, "height": 1350})
         await page.set_content(html, wait_until="networkidle")
+        await page.wait_for_timeout(1000)  # フォント描画待ち
         await page.screenshot(path=output_path, full_page=False)
         await browser.close()
 
