@@ -461,7 +461,20 @@ def build_point(content: dict, slide_num: int, total: int) -> str:
     html = html.replace("{{ body }}", body_html)
     html = html.replace("{{ body_font_size }}", body_font_size)
     html = html.replace("{{ body_line_height }}", body_line_height)
+
+    # ヒント: 文字数に応じてフォントサイズ自動調整（510px幅内に収める）
+    hint_len = len(content["hint"])
+    if hint_len <= 8:
+        hint_font_size = "46px"
+    elif hint_len <= 12:
+        hint_font_size = "38px"
+    elif hint_len <= 16:
+        hint_font_size = "32px"
+    else:
+        hint_font_size = "26px"
+
     html = html.replace("{{ hint }}", content["hint"])
+    html = html.replace("{{ hint_font_size }}", hint_font_size)
     return html
 
 
