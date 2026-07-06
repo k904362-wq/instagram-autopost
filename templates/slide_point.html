@@ -141,8 +141,10 @@
 
   /* 下段グループ（ヒント）: 左側のみ・右はゴリラ */
   .lower-group {
-    width: 510px;   /* content-zone left:56px + 510px = 566px < gorilla start:580px */
+    width: 510px;
     padding-bottom: 60px;
+    position: relative;
+    z-index: 10;
   }
   .hint-label {
     display: flex; align-items: center;
